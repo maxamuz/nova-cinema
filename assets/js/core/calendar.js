@@ -2,7 +2,7 @@ const WEEK_LENGTH = 6;
 
 function createArrow(direction, onClick) {
 	const item = document.createElement('li');
-	item.className = 'calendar-panel__item';
+	item.className = 'calendar-panel__item calendar-panel__arrow';
 	item.textContent = direction === 'next' ? '>' : '<';
 	item.addEventListener('click', onClick);
 	return item;
@@ -10,7 +10,7 @@ function createArrow(direction, onClick) {
 
 function renderDays(container, startDate, selectedDate, onSelect, stateApi) {
 	for (let i = 0; i < WEEK_LENGTH; i += 1) {
-		const date = new Date(startDate);
+	const date = new Date(startDate);
 		date.setDate(startDate.getDate() + i);
 		const dateString = stateApi.formatDate(date);
 
@@ -22,22 +22,44 @@ function renderDays(container, startDate, selectedDate, onSelect, stateApi) {
 
 		const isToday = stateApi.formatDate(new Date()) === dateString;
 		const dayName = date.toLocaleDateString('ru-RU', { weekday: 'short' });
-		node.innerHTML = `<strong>${isToday ? 'Сегодня' : dayName}</strong><br>${date.getDate()}.${date.getMonth() + 1}`;
+		node.innerHTML = `${isToday ? 'Сегодня' : dayName}<br>${date.getDate()}.${date.getMonth() + 1}`;
 
 		node.addEventListener('click', () => {
-			stateApi.setActiveDate(dateString);
-			onSelect(dateString);
+			// Обновляем локальное состояние и внешнее
+			const newSelectedDate = dateString;
+			stateApi.setActiveDate(newSelectedDate);
+			
+			// Удаляем активный класс у всех элементов
+			container.querySelectorAll('.calendar-panel__item--active').forEach(item => {
+				item.classList.remove('calendar-panel__item--active');
+			});
+			
+			// Добавляем активный класс к текущему элементу
+			node.classList.add('calendar-panel__item--active');
+			
+			onSelect(newSelectedDate);
 		});
 		container.appendChild(node);
 	}
 }
 
 function initCalendar(container, onSelect) {
-	const stateApi = window.Nova?.state;
+	const stateApi = window.Nova?.state || {
+		getActiveDate: () => null,
+		formatDate: (d) => d.toISOString().split('T')[0],
+		setActiveDate: () => {},
+	};
 	let offset = 0;
+	let hasNavigatedForward = false;
+	let selectedDate = stateApi.getActiveDate();
 
 	const render = () => {
+		if (offset === 0) {
+			hasNavigatedForward = false;
+		}
+
 		container.innerHTML = '';
+
 		const currentDate = new Date();
 		currentDate.setDate(currentDate.getDate() + offset);
 
@@ -49,15 +71,18 @@ function initCalendar(container, onSelect) {
 			}));
 		}
 
-		renderDays(container, currentDate, stateApi.getActiveDate(), (date) => {
+		// Передаём актуальное значение selectedDate
+		renderDays(container, currentDate, selectedDate, (date) => {
 			onSelect(date);
-			render();
 		}, stateApi);
 
-		container.appendChild(createArrow('next', () => {
-			offset += WEEK_LENGTH;
-			render();
-		}));
+		if (!hasNavigatedForward) {
+			container.appendChild(createArrow('next', () => {
+				offset += WEEK_LENGTH;
+				hasNavigatedForward = true;
+				render();
+			}));
+		}
 	};
 
 	render();
@@ -67,4 +92,3 @@ window.Nova = window.Nova || {};
 window.Nova.calendar = {
 	initCalendar,
 };
-
