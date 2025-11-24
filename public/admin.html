@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Cinema — управление</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell app-shell--admin">
+    <header class="masthead masthead--admin">
+        <div class="brand-mark">
+            <p class="brand-mark__title">nova<span class="brand-mark__accent">cinema</span></p>
+            <p class="brand-mark__subtitle">администратор</p>
+        </div>
+        <button class="action-button action-button--ghost" id="logoutAdmin">Выйти</button>
+    </header>
+    <main class="admin-grid">
+        <section class="panel" id="hallPanel">
+            <header class="panel__header">
+                <h2 class="panel__title">Залы</h2>
+                <button class="action-button action-button--small" id="addHallBtn">Добавить</button>
+            </header>
+            <ul class="panel__list" id="hallList"></ul>
+        </section>
+        <section class="panel" id="layoutPanel">
+            <header class="panel__header">
+                <h2 class="panel__title">Конфигурация залов</h2>
+            </header>
+            <div class="panel__body">
+                <div class="selector" id="layoutSelector"></div>
+                <form class="grid-form">
+                    <label class="form-field">
+                        <span class="form-field__label">Рядов</span>
+                        <input class="form-field__input" type="number" id="rowCountInput" min="1">
+                    </label>
+                    <label class="form-field">
+                        <span class="form-field__label">Мест</span>
+                        <input class="form-field__input" type="number" id="seatCountInput" min="1">
+                    </label>
+                    <button class="action-button action-button--primary" id="gridApplyBtn">Сохранить схему</button>
+                </form>
+                <div class="design-grid" id="designerGrid"></div>
+            </div>
+        </section>
+        <section class="panel" id="pricingPanel">
+            <header class="panel__header">
+                <h2 class="panel__title">Цены</h2>
+            </header>
+            <div class="panel__body">
+                <div class="selector" id="pricingSelector"></div>
+                <form class="price-form">
+                    <label class="form-field">
+                        <span class="form-field__label">Обычное место</span>
+                        <input class="form-field__input" type="number" id="regularPriceInput" min="0">
+                    </label>
+                    <label class="form-field">
+                        <span class="form-field__label">VIP место</span>
+                        <input class="form-field__input" type="number" id="vipPriceInput" min="0">
+                    </label>
+                    <button class="action-button action-button--primary" id="priceSaveBtn">Сохранить цены</button>
+                </form>
+            </div>
+        </section>
+        <section class="panel" id="sessionPanel">
+            <header class="panel__header">
+                <h2 class="panel__title">Сеансы</h2>
+                <button class="action-button action-button--small" id="newSessionBtn">Добавить</button>
+            </header>
+            <div class="panel__body">
+                <div class="session-list" id="sessionBoard"></div>
+            </div>
+        </section>
+        <section class="panel" id="filmPanel">
+            <header class="panel__header">
+                <h2 class="panel__title">Фильмы</h2>
+                <button class="action-button action-button--small" id="newFilmBtn">Добавить</button>
+            </header>
+            <ul class="panel__list" id="filmGallery"></ul>
+        </section>
+        <section class="panel" id="salesPanel">
+            <header class="panel__header">
+                <h2 class="panel__title">Продажи</h2>
+            </header>
+            <div class="panel__body">
+                <div class="selector" id="salesSelector"></div>
+                <button class="action-button action-button--primary" id="salesToggleBtn">Изменить статус</button>
+                <p class="panel__note" id="salesStatusText">Статус неизвестен</p>
+            </div>
+        </section>
+    </main>
+
+    <dialog class="modal" id="hallModal">
+        <form class="modal__content" id="hallForm">
+            <h3 class="modal__title">Новый зал</h3>
+            <label class="form-field">
+                <span class="form-field__label">Название</span>
+                <input class="form-field__input" type="text" name="hallName" required>
+            </label>
+            <div class="modal__actions">
+                <button class="action-button action-button--ghost" type="button" data-close>Отмена</button>
+                <button class="action-button action-button--primary" type="submit">Создать</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog class="modal" id="filmModal">
+        <form class="modal__content" id="filmForm">
+            <h3 class="modal__title">Новый фильм</h3>
+            <label class="form-field">
+                <span class="form-field__label">Название</span>
+                <input class="form-field__input" type="text" name="filmName" required>
+            </label>
+            <label class="form-field">
+                <span class="form-field__label">Продолжительность (мин)</span>
+                <input class="form-field__input" type="number" name="filmDuration" required min="1">
+            </label>
+            <label class="form-field">
+                <span class="form-field__label">Описание</span>
+                <textarea class="form-field__input" name="filmDescription" rows="3"></textarea>
+            </label>
+            <label class="form-field">
+                <span class="form-field__label">Страна</span>
+                <input class="form-field__input" type="text" name="filmOrigin">
+            </label>
+            <label class="form-field">
+                <span class="form-field__label">Постер (URL или PNG)</span>
+                <input class="form-field__input" type="file" name="filePoster" accept="image/png">
+            </label>
+            <div class="modal__actions">
+                <button class="action-button action-button--ghost" type="button" data-close>Отмена</button>
+                <button class="action-button action-button--primary" type="submit">Сохранить</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog class="modal" id="sessionModal">
+        <form class="modal__content" id="sessionForm">
+            <h3 class="modal__title">Новый сеанс</h3>
+            <label class="form-field">
+                <span class="form-field__label">Зал</span>
+                <select class="form-field__input" name="seanceHallid" id="sessionHallSelect"></select>
+            </label>
+            <label class="form-field">
+                <span class="form-field__label">Фильм</span>
+                <select class="form-field__input" name="seanceFilmid" id="sessionFilmSelect"></select>
+            </label>
+            <label class="form-field">
+                <span class="form-field__label">Время</span>
+                <input class="form-field__input" type="time" name="seanceTime" value="10:00">
+            </label>
+            <div class="modal__actions">
+                <button class="action-button action-button--ghost" type="button" data-close>Отмена</button>
+                <button class="action-button action-button--primary" type="submit">Сохранить</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script defer src="../assets/js/core/state.js"></script>
+    <script defer src="../assets/js/core/apiClient.js"></script>
+    <script defer src="../assets/js/admin/adminApp.js"></script>
+</body>
+</html>
+

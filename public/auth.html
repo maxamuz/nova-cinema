@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Cinema — вход</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell app-shell--centered">
+    <main class="auth-card">
+        <div class="brand-mark brand-mark--mini auth-card__brand">
+            <p class="brand-mark__title">nova<span class="brand-mark__accent">cinema</span></p>
+        </div>
+        <form class="auth-card__form" id="adminLoginForm">
+            <label class="form-field">
+                <span class="form-field__label">Email</span>
+                <input class="form-field__input" type="email" name="login" required>
+            </label>
+            <label class="form-field">
+                <span class="form-field__label">Пароль</span>
+                <input class="form-field__input" type="password" name="password" required>
+            </label>
+            <button class="action-button action-button--primary" type="submit">Войти</button>
+        </form>
+        <button class="action-button action-button--ghost auth-card__back" onclick="window.location='home.html'">На главную</button>
+    </main>
+    <script defer src="../assets/js/core/state.js"></script>
+    <script defer src="../assets/js/core/apiClient.js"></script>
+    <script defer src="../assets/js/admin/auth.js"></script>
+</body>
+</html>
+

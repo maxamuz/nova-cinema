@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Cinema — расписание</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell app-shell--landing">
+    <header class="masthead">
+        <div class="brand-mark">
+            <p class="brand-mark__title">nova<span class="brand-mark__accent">cinema</span></p>
+            <p class="brand-mark__subtitle">бронируйте лучшие места</p>
+        </div>
+        <button class="action-button action-button--ghost" id="authEntry">Вход для админа</button>
+    </header>
+    <nav class="calendar-panel" aria-label="Навигация по датам">
+        <ul class="calendar-panel__list" id="dateCarousel"></ul>
+    </nav>
+    <main class="content-board">
+        <section class="screening-board" id="screeningBoard" aria-live="polite"></section>
+    </main>
+    <script defer src="../assets/js/core/state.js"></script>
+    <script defer src="../assets/js/core/apiClient.js"></script>
+    <script defer src="../assets/js/core/calendar.js"></script>
+    <script defer src="../assets/js/customer/homePage.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Cinema — выбор мест</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell app-shell--panel">
+    <header class="masthead masthead--compact">
+        <div class="brand-mark brand-mark--mini">
+            <p class="brand-mark__title">nova<span class="brand-mark__accent">cinema</span></p>
+        </div>
+        <button class="action-button action-button--light" onclick="history.back()">Назад к расписанию</button>
+    </header>
+    <main class="content-board content-board--narrow">
+        <section class="auditorium-card">
+            <div class="auditorium-card__info" id="auditoriumSummary"></div>
+            <div class="auditorium-card__stage">
+                <p class="auditorium-card__screen">Экран</p>
+                <div class="seat-grid" id="seatGrid"></div>
+            </div>
+            <ul class="seat-legend">
+                <li class="seat-legend__item"><span class="seat seat--free"></span>Свободно</li>
+                <li class="seat-legend__item"><span class="seat seat--vip"></span>VIP</li>
+                <li class="seat-legend__item"><span class="seat seat--taken"></span>Занято</li>
+                <li class="seat-legend__item"><span class="seat seat--missing"></span>Нет кресла</li>
+                <li class="seat-legend__item"><span class="seat seat--selected"></span>Выбрано</li>
+            </ul>
+        <button class="action-button action-button--primary" id="reserveSeats">Продолжить</button>
+    </section>
+</main>
+<script defer src="../assets/js/core/state.js"></script>
+<script defer src="../assets/js/core/apiClient.js"></script>
+<script defer src="../assets/js/customer/auditoriumPage.js"></script>
+</body>
+</html>
+
