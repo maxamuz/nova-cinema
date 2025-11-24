@@ -23,8 +23,10 @@ function renderDays(container, startDate, selectedDate, onSelect, stateApi) {
 		// Добавляем класс для каждого седьмого дня, который отстоит от "Сегодня"
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
-		const daysFromToday = Math.floor((date - today) / (1000 * 60 * 24));
-		if (daysFromToday > 0 && (daysFromToday + 5) % 7 === 0) { // +4 чтобы сдвинуть на 4 дня (25.11 -> 29.11, 26.11 -> 30.1)
+		// Проверяем, является ли текущая дата седьмым днем от сегодня
+		const targetDate = new Date(today);
+		targetDate.setDate(today.getDate() + 6); // 24.11 + 6 дней = 30.11
+		if (date.toDateString() === targetDate.toDateString()) {
 			node.classList.add('calendar-panel__item--active');
 		}
 
