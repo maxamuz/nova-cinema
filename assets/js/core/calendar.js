@@ -14,15 +14,23 @@ function renderDays(container, startDate, selectedDate, onSelect, stateApi) {
 		date.setDate(startDate.getDate() + i);
 		const dateString = stateApi.formatDate(date);
 
-		const node = document.createElement('li');
+	const node = document.createElement('li');
 		node.className = 'calendar-panel__item';
 		if (dateString === selectedDate) {
 			node.classList.add('calendar-panel__item--active');
 		}
+		
+		// Добавляем класс для каждого седьмого дня, который отстоит от "Сегодня"
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		const daysFromToday = Math.floor((date - today) / (1000 * 60 * 24));
+		if (daysFromToday > 0 && (daysFromToday + 5) % 7 === 0) { // +4 чтобы сдвинуть на 4 дня (25.11 -> 29.11, 26.11 -> 30.1)
+			node.classList.add('calendar-panel__item--active');
+		}
 
-		const isToday = stateApi.formatDate(new Date()) === dateString;
+	const isToday = stateApi.formatDate(new Date()) === dateString;
 		const dayName = date.toLocaleDateString('ru-RU', { weekday: 'short' });
-		node.innerHTML = `${isToday ? 'Сегодня' : dayName}<br>${date.getDate()}.${date.getMonth() + 1}`;
+	node.innerHTML = `${isToday ? 'Сегодня' : dayName}<br>${date.getDate()}.${date.getMonth() + 1}`;
 
 		node.addEventListener('click', () => {
 			// Обновляем локальное состояние и внешнее
